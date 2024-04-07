@@ -1,0 +1,13 @@
+@import url(./widgets.css);
+
+nav {
+    background-color: #68cce7;
+    color:black;
+    a, span {
+        font-weight:700;
+    }
+}
+
+#search-history-container {
+    width: 11%;
+}

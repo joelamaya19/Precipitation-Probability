@@ -1,0 +1,24 @@
+@import url(./widgets.css);
+
+/* Keyframes for fade-out animation */
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+body {
+    background-image: url('../images/How-to-Build-an-API-Driven-Weather-App.png');
+    background-size: cover;
+    background-position: center;
+}
+
+#searchCard {
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+}
+
+.searchbox {
+    width: 400px;
+    padding-bottom: 80px;
+}
+

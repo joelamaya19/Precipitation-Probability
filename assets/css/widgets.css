@@ -1,0 +1,18 @@
+#errorMessage {
+    z-index: 1000; /* Ensure the error message appears above other content */
+    /* animation: fadeOut 2.5s ease-in-out forwards; */
+    opacity: 0;
+}
+
+#search-history-container {
+    z-index: 999;
+    position: absolute;
+    width: 80%;
+    background-color: #fff; /* Set background color */
+    border: 1px solid #ddd; /* Set border color */
+    border-radius: 0; /* Remove border-radius or set to desired value */
+    box-shadow: none; /* Remove box-shadow */
+    .recent-search {
+        padding: 10px;
+    }
+}
