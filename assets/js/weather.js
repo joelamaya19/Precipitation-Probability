@@ -31,6 +31,7 @@ function searchCityWeather(cityName) {
     fetch(apiUrlForecast)
     .then(response => {
         if (!response.ok) {
+            displayError();
             throw new Error('Network response was not ok');
         }
         return response.json();
@@ -39,6 +40,7 @@ function searchCityWeather(cityName) {
         // Process the JSON data
         console.log(data);
         // Here you can work with the data returned from the API
+        displayForecastWeather(data);
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -71,10 +73,10 @@ function displayCurrentWeather(data) {
     const cityWeather = capitalizeFirstLetter(data.weather[0].description);
 
     // Create a jQuery object for the card
-    let $card = $('<div class="card">');
+    let $card = $('<div class="card cityWeather">');
 
     // Create a card body
-    let $cardBody = $('<div class="card-body">');
+    let $cardBody = $('<div class="insideCityWeather">');
 
     // Set the card content
     $cardBody.append('<h5 class="card-title">' + cityName + '</h5>');
@@ -92,9 +94,50 @@ function displayCurrentWeather(data) {
     // Append the card to the display-weather container
     $('#display-weather').append($card);
 
-    console.log(cityName, cityTemp, cityTempFeels, cityTempMax, cityTempMin, cityHumidity, cityWindSpeed, cityWeather);
+    // console.log(cityName, cityTemp, cityTempFeels, cityTempMax, cityTempMin, cityHumidity, cityWindSpeed, cityWeather);
     
 
+}
+
+function displayForecastWeather(data) {
+    const forecasts = data.list;
+    const forecastContainer = $('#forecast');
+
+    // Clear any existing content in the forecast container
+    forecastContainer.empty();
+
+    // Loop through each forecast data item
+    for (let i = 0; i < forecasts.length; i += 8) {
+        const forecast = forecasts[i];
+        const date = new Date(forecast.dt_txt);
+        const temperature = kelvinToFahrenheit(forecast.main.temp);
+        const feelsLike = kelvinToFahrenheit(forecast.main.feels_like);
+        const tempMin = kelvinToFahrenheit(forecast.main.temp_min);
+        const tempMax = kelvinToFahrenheit(forecast.main.temp_max);
+        const windSpeed = parseInt(forecast.wind.speed * 2.23694);
+        const weatherDescription = capitalizeFirstLetter(forecast.weather[0].description);
+
+        // Create a card for the forecast
+        const card = $('<div>').addClass('card');
+        const cardBody = $('<div>').addClass('forecastWeather');
+
+        // Populate card body with forecast details
+        const dateElement = $('<p>').text(date.toLocaleDateString());
+        const temperatureElement = $('<p>').text(`Temperature: ${temperature} °F`);
+        const feelsLikeElement = $('<p>').text(`Feels Like: ${feelsLike} °F`);
+        const tempMinMaxElement = $('<p>').text(`Min: ${tempMin} °F, Max: ${tempMax} °F`);
+        const windSpeedElement = $('<p>').text(`Wind Speed: ${windSpeed} mph`);
+        const descriptionElement = $('<p>').text(`Description: ${weatherDescription}`);
+
+        // Append forecast details to card body
+        cardBody.append(dateElement, temperatureElement, feelsLikeElement, tempMinMaxElement, windSpeedElement, descriptionElement);
+
+        // Append card body to card
+        card.append(cardBody);
+
+        // Append card to forecast container
+        forecastContainer.append(card);
+    }
 }
 
 function displayError() {
@@ -114,9 +157,6 @@ function capitalizeFirstLetter(string) {
         return char.toUpperCase();
     });
 }
-// function displayForecastWeather(data) {
-
-// }
 
 $('#citySearchForm').submit(function(event) {
     event.preventDefault();

@@ -11,3 +11,30 @@ nav {
 #search-history-container {
     width: 11%;
 }
+
+#display-weather {
+    border-bottom: 2px solid black;
+
+}
+
+.cityWeather {
+    display: flex;
+    align-items: center;
+    margin: 50px auto;
+    max-width: 25%;
+    padding: 16px;
+}
+
+.insideCityWeather {
+    margin: 20px;
+}
+
+.forecastsWeather {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.forecastWeather {
+    padding: 20px;
+    margin: 10px auto;
+}
