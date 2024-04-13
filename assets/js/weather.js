@@ -121,11 +121,15 @@ function capitalizeFirstLetter(string) {
 $('#citySearchForm').submit(function(event) {
     event.preventDefault();
     const citySearchInput = $('#citySearchInput');
+    
+    let inputValue = citySearchInput.val(); // Get the current value of the input
+    inputValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1); // Capitalize the first letter
 
-    const search = citySearchInput.val().trim();
+    citySearchInput.val(inputValue); // Set the capitalized value back to the input field
+    
 
-    if (search.length>3) {
-        window.location.href = `search-weather.html?search=${search}`;
+    if (inputValue.length>3) {
+        window.location.href = `search-weather.html?search=${inputValue}`;
 
     } else {
         displayError();
