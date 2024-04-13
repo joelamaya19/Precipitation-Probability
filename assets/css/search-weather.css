@@ -14,15 +14,18 @@ nav {
 
 #display-weather {
     border-bottom: 2px solid black;
+    padding-top: 1px;
 
 }
 
 .cityWeather {
     display: flex;
-    align-items: center;
     margin: 50px auto;
     max-width: 25%;
     padding: 16px;
+    border: 2px solid black;
+    background-color: rgba(255, 255, 255, 0.2); /* Transparent white background */
+    backdrop-filter: blur(5px); /* Minimal blur effect */
 }
 
 .insideCityWeather {
@@ -32,9 +35,19 @@ nav {
 .forecastsWeather {
     display: flex;
     justify-content: space-evenly;
+    padding-top: 10px;
+}
+
+.eachForecast {
+    margin: 20px 20px 0px;
+    width: 20%;
 }
 
 .forecastWeather {
     padding: 20px;
-    margin: 10px auto;
+}
+
+.dateElement {
+    background-color: #68cce7;
+    border-radius: 20px;
 }
