@@ -1,3 +1,21 @@
+// Define a mapping of weather descriptions to background
+const backgroundMap = {
+    'Clear': './assets/images/sunny.gif', // Sunny
+    'Clouds': './assets/images/cloudy2.gif', // Cloudy
+    'Rain': './assets/images/rainy.gif', // Rainy
+    'Thunderstorm': './assets/images/thunderstorm.gif', // Thunderstorm
+    'Snow': './assets/images/snowy.gif', // Snowy
+    // Add more mappings as needed
+};
+
+const weatherIconMap = {
+    'Clear': 'fas fa-sun', // Sunny
+    'Clouds': 'fas fa-cloud', // Cloudy
+    'Rain': 'fas fa-cloud-showers-heavy', // Rainy
+    'Thunderstorm': 'fas fa-bolt', // Thunderstorm
+    'Snow': 'fas fa-snowflake', // Snowy
+    // Add more mappings as needed
+};
 
 function searchCityWeather(cityName) {
 
@@ -78,18 +96,12 @@ function displayCurrentWeather(data) {
     const sunrise = dayjs.unix(data.sys.sunrise).format(`h:mm A`);
     const sunset = dayjs.unix(data.sys.sunset).format(`h:mm A`);
 
-    // Define a mapping of weather descriptions to background
-    const backgroundMap = {
-        'Clear': './assets/images/sunny.gif', // Sunny
-        'Clouds': './assets/images/cloudy2.gif', // Cloudy
-        'Rain': './assets/images/rainy.gif', // Rainy
-        'Thunderstorm': './assets/images/thunderstorm.gif', // Thunderstorm
-        'Snow': './assets/images/snowy.gif', // Snowy
-        // Add more mappings as needed
-    };
-
     // Get the background image URL based on the main weather description
     const backgroundImageUrl = backgroundMap[mainWeatherDescription] || '#FFFFFF'; // Default to white if no match found
+
+    // Get the corresponding Font Awesome icon
+    const weatherIcon = weatherIconMap[mainWeatherDescription] || 'fas fa-question-circle'; // Default to a question mark icon if no match found
+
 
     const displayWeather = $('#display-weather');
 
@@ -112,7 +124,7 @@ function displayCurrentWeather(data) {
         $('<p>').addClass('card-text text-left').html(`<i class="fas fa-thermometer-half"></i> Temperature: ${cityTemp}°F`),
         $('<p>').addClass('card-text').html(`<i class="fas fa-thermometer-half"></i> Feels Like: ${cityTempFeels}°F`),
         $('<p>').addClass('card-text').html(`<i class="fas fa-arrow-down"></i> Min: ${cityTempMin}°F / <i class="fas fa-arrow-up"></i> Max: ${cityTempMax}°F`),
-        $('<p>').addClass('card-text').html(`<i class="fas fa-cloud"></i> Description: ${cityWeatherDescription}`)
+        $('<p>').addClass('card-text').html(`<i class="${weatherIcon}"></i> ${cityWeatherDescription}`)
     );
     
 
@@ -166,18 +178,22 @@ function displayForecastWeather(data) {
         const tempMax = kelvinToFahrenheit(forecast.main.temp_max);
         const windSpeed = parseInt(forecast.wind.speed * 2.23694);
         const weatherDescription = capitalizeFirstLetter(forecast.weather[0].description);
+        const mainWeatherDescription = capitalizeFirstLetter(forecast.weather[0].main);
 
         // Create a card for the forecast
         const card = $('<div>').addClass('card eachForecast');
         const cardBody = $('<div>').addClass('forecastWeather');
 
+        // Default to a question mark icon if no match found
+        const weatherIcon = weatherIconMap[mainWeatherDescription] || 'fas fa-question-circle'; 
+        
         // Populate card body with forecast details
         const dateElement = $('<p>').addClass('dateElement text-center fw-bold').text(formattedDate);
         const temperatureElement = $('<p>').html(`<i class="fas fa-thermometer-half"></i> Temperature: ${temperature} °F`);
         const feelsLikeElement = $('<p>').html(`<i class="fas fa-thermometer-half"></i> Feels Like: ${feelsLike} °F`);
         const tempMinMaxElement = $('<p>').html(`<i class="fas fa-arrow-down"></i> Min: ${tempMin} °F / <i class="fas fa-arrow-up"></i> Max: ${tempMax} °F`);
         const windSpeedElement = $('<p>').html(`<i class="fas fa-wind"></i> Wind Speed: ${windSpeed} mph`);
-        const descriptionElement = $('<p>').html(`<i class="fas fa-cloud"></i> Description: ${weatherDescription}`);
+        const descriptionElement = $('<p>').html(`<i class="fas ${weatherIcon}"></i> Description: ${weatherDescription}`);
         
 
         // Append forecast details to card body
@@ -227,44 +243,45 @@ $('#citySearchForm').submit(function(event) {
     }
 
 });
-// $('#citySearchInput').autocomplete({
-//     source: function(request, response) {
-//         console.log(request.term);
-//         if (request.term.length < 3) return;
-//         // Fetch city data from the OpenWeatherMap API
-//         $.get({
-//             url: 'https://api.openweathermap.org/data/2.5/find',
-//             data: {
-//                 q: request.term, // Search query
-//                 appid: '48eeec04e0b7fbab7f60aee652513ccc', // Your API key
-//                 type: 'like', // Match city name partially
-//                 mode: 'json', // JSON response
-//                 cnt: 10 // Number of results to return
-//             },
-//             success: function(data) {
-//                 // Extract unique city names with state and country from the API response
-//                 const uniqueCities = {};
-//                 const cityInfo = [];
-//                 data.list.forEach(city => {
-//                     const cityName = `${city.name}, ${city.sys.country}`;
-//                     // Add city name to the uniqueCities object
-//                     uniqueCities[cityName] = true;
-//                 });
-//                 // Push unique city names to the cityInfo array
-//                 Object.keys(uniqueCities).forEach(cityName => {
-//                     cityInfo.push(cityName);
-//                 });
-//                 // Provide the unique city names as suggestions
-//                 response(cityInfo);
-//             },
-//             error: function(error) {
-//                 console.error('Error fetching city data:', error);
-//                 response([]); // Return an empty array in case of error
-//             }
-//         });
-//     },
-//     minLength: 3 // Minimum number of characters before autocomplete starts
-// });
+
+$('#citySearchInput').autocomplete({
+    source: function(request, response) {
+        console.log(request.term);
+        if (request.term.length < 3) return;
+        // Fetch city data from the OpenWeatherMap API
+        $.get({
+            url: 'https://api.openweathermap.org/data/2.5/find',
+            data: {
+                q: request.term, // Search query
+                appid: '48eeec04e0b7fbab7f60aee652513ccc', // Your API key
+                type: 'like', // Match city name partially
+                mode: 'json', // JSON response
+                cnt: 10 // Number of results to return
+            },
+            success: function(data) {
+                // Extract unique city names with state and country from the API response
+                const uniqueCities = {};
+                const cityInfo = [];
+                data.list.forEach(city => {
+                    const cityName = `${city.name}, ${city.sys.country}`;
+                    // Add city name to the uniqueCities object
+                    uniqueCities[cityName] = true;
+                });
+                // Push unique city names to the cityInfo array
+                Object.keys(uniqueCities).forEach(cityName => {
+                    cityInfo.push(cityName);
+                });
+                // Provide the unique city names as suggestions
+                response(cityInfo);
+            },
+            error: function(error) {
+                console.error('Error fetching city data:', error);
+                response([]); // Return an empty array in case of error
+            }
+        });
+    },
+    minLength: 3 // Minimum number of characters before autocomplete starts
+});
 
 $('#citySearchInput').click(function(){
     
@@ -303,6 +320,14 @@ $(document).ready(function () {
         searchCityWeather(cityNameSearch);
         savePreviousSearch(cityNameSearch);
     }
+    $('#citySearchInput').keyup(function() {
+        const inputValue = $(this).val();
+        if (inputValue.length > 0) {
+            $('#search-history-container').addClass('d-none');
+        } else {
+            $('#search-history-container').removeClass('d-none');
+        }
+    });
 });
 
   

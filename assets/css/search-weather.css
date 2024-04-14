@@ -38,6 +38,13 @@ p {
     margin: 20px;
 }
 
+.forecastTitle {
+    text-align: center; /* Center the text */
+    color: white; /* Change the text color to white */
+    background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent black background */
+    padding: 10px; /* Add padding around the text */
+}
+
 .forecastsWeather {
     display: flex;
     justify-content: space-evenly;
@@ -72,7 +79,12 @@ p {
         background-size: cover; /* Adjust background size for smaller screens */
     }
     .eachForecast {
-        width: 45%; /* Adjust width for smaller screens */
+        width: 75%; /* Adjust width for smaller screens */
+        margin: 0 auto; /* Center the forecast cards */
+        margin-bottom: 15px; /* Add some bottom margin between forecast cards */
+    }
+    .forecastWeather p {
+        font-size: 9px; /* Reduce font size for smaller screens */
     }
 }
 
