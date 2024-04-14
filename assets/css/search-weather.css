@@ -55,8 +55,47 @@ p {
 }
 
 .dateElement {
+    font-size: 14px;
     background-color: #68cce7;
     border-radius: 20px;
     border-bottom: none;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Additional styles for smaller screens */
+/* Adjustments for cityWeather card */
+@media (max-width: 768px) {
+    .cityWeather {
+        max-width: 50%; /* Adjust max-width for smaller screens */
+    }
+    #display-weather {
+        background-size: cover; /* Adjust background size for smaller screens */
+    }
+    .eachForecast {
+        width: 45%; /* Adjust width for smaller screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .cityWeather {
+        max-width: 75%; /* Adjust max-width for even smaller screens */
+    }
+    #display-weather {
+        background-size: cover;
+    }
+    .eachForecast {
+        width: 100%; /* Adjust width for smaller screens */
+        margin: 0 auto; /* Center the forecast cards */
+        margin-bottom: 15px; /* Add some bottom margin between forecast cards */
+    }
+    .forecastWeather p {
+        font-size: 9px; /* Reduce font size for smaller screens */
+    }
+    .dateElement {
+        font-size: 8px;
+    }
+}
+
+
+
+

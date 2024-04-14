@@ -95,7 +95,7 @@ function displayCurrentWeather(data) {
 
     displayWeather.css({
         'background-image': 'url("' + backgroundImageUrl + '")',
-        'background-size': '100% auto',
+        'background-size': 'cover',
         'background-position': 'center',
         'background-repeat': 'no-repeat',
     });
@@ -172,7 +172,7 @@ function displayForecastWeather(data) {
         const cardBody = $('<div>').addClass('forecastWeather');
 
         // Populate card body with forecast details
-        const dateElement = $('<p>').addClass('dateElement text-center fw-bold fs-14').text(formattedDate);
+        const dateElement = $('<p>').addClass('dateElement text-center fw-bold').text(formattedDate);
         const temperatureElement = $('<p>').html(`<i class="fas fa-thermometer-half"></i> Temperature: ${temperature} °F`);
         const feelsLikeElement = $('<p>').html(`<i class="fas fa-thermometer-half"></i> Feels Like: ${feelsLike} °F`);
         const tempMinMaxElement = $('<p>').html(`<i class="fas fa-arrow-down"></i> Min: ${tempMin} °F / <i class="fas fa-arrow-up"></i> Max: ${tempMax} °F`);
