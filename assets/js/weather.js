@@ -73,21 +73,25 @@ function displayCurrentWeather(data) {
     const cityWindSpeed = parseInt(data.wind.speed * 2.23694);
     const cityWeatherDescription = capitalizeFirstLetter(data.weather[0].description);
     const mainWeatherDescription = capitalizeFirstLetter(data.weather[0].main);
+    
+    // Get sunrise and sunset times using Day.js
+    const sunrise = dayjs.unix(data.sys.sunrise).format(`h:mm A`);
+    const sunset = dayjs.unix(data.sys.sunset).format(`h:mm A`);
 
-    // Define a mapping of weather descriptions to background colors
+    // Define a mapping of weather descriptions to background
     const backgroundMap = {
         'Clear': './assets/images/sunny.gif', // Sunny
         'Clouds': './assets/images/cloudy2.gif', // Cloudy
         'Rain': './assets/images/rainy.gif', // Rainy
-        'Thunderstorm': '#575757', // Thunderstorm
-        'Snow': '#F6F6F6', // Snowy
+        'Thunderstorm': './assets/images/thunderstorm.gif', // Thunderstorm
+        'Snow': './assets/images/snowy.gif', // Snowy
         // Add more mappings as needed
     };
 
-    // Get the background color based on the weather description
+    // Get the background image URL based on the main weather description
     const backgroundImageUrl = backgroundMap[mainWeatherDescription] || '#FFFFFF'; // Default to white if no match found
 
-    const displayWeather = $('#display-weather')
+    const displayWeather = $('#display-weather');
 
     displayWeather.css({
         'background-image': 'url("' + backgroundImageUrl + '")',
@@ -96,34 +100,53 @@ function displayCurrentWeather(data) {
         'background-repeat': 'no-repeat',
     });
     
-    // Create a jQuery object for the card
-    let $card = $('<div class="card cityWeather">')
+    // Create a main weather card
+    let $mainCard = $('<div class="card cityWeather">');
 
-    // Create a card body
-    let $cardBody = $('<div class="insideCityWeather">');
+    // Create a card body for main weather card
+    let $mainCardBody = $('<div class="insideCityWeather">');
 
-    // Set the card content
-    $cardBody.append(
-        $('<h5>').addClass('card-title text-center fw-bold fs-14').text(cityName+', ' +cityCountry),
-        $('<p>').addClass('card-text text-left').text('Temperature: ' + cityTemp + '°F'),
-        $('<p>').addClass('card-text').text('Feels Like: ' + cityTempFeels + '°F'),
-        $('<p>').addClass('card-text').text('Max Temperature: ' + cityTempMax + '°F'),
-        $('<p>').addClass('card-text').text('Min Temperature: ' + cityTempMin + '°F'),
-        $('<p>').addClass('card-text').text('Humidity: ' + cityHumidity + '%'),
-        $('<p>').addClass('card-text').text('Wind Speed: ' + cityWindSpeed + ' mph'),
-        $('<p>').addClass('card-text').text('Description: ' + cityWeatherDescription)
+    // Set the main card content
+    $mainCardBody.append(
+        $('<h5>').addClass('card-title text-center fw-bold fs-14').text(`${cityName}, ${cityCountry}`),
+        $('<p>').addClass('card-text text-left').html(`<i class="fas fa-thermometer-half"></i> Temperature: ${cityTemp}°F`),
+        $('<p>').addClass('card-text').html(`<i class="fas fa-thermometer-half"></i> Feels Like: ${cityTempFeels}°F`),
+        $('<p>').addClass('card-text').html(`<i class="fas fa-arrow-down"></i> Min: ${cityTempMin}°F / <i class="fas fa-arrow-up"></i> Max: ${cityTempMax}°F`),
+        $('<p>').addClass('card-text').html(`<i class="fas fa-cloud"></i> Description: ${cityWeatherDescription}`)
     );
-
-    // Append the card body to the card
-    $card.append($cardBody);
-
-    // Append the card to the display-weather container
-    $('#display-weather').append($card);
-
-    // console.log(cityName, cityTemp, cityTempFeels, cityTempMax, cityTempMin, cityHumidity, cityWindSpeed, cityWeather);
     
 
+    // Append the main card body to the main card
+    $mainCard.append($mainCardBody);
+
+    // Append the main card to the display-weather container
+    displayWeather.append($mainCard);
+
+    // Create an additional details card
+    let $additionalDetailsCard = $('<div class="card cityWeather">');
+
+    // Create a card body for additional details card
+    let $additionalDetailsCardBody = $('<div class="insideCityWeather">');
+
+    // Set the additional details card content
+    $additionalDetailsCardBody.append(
+        $('<h5>').addClass('card-title text-center fw-bold fs-14').text('Additional Details'),
+        $('<p>').addClass('card-text').html(`<i class="fas fa-tint"></i> Humidity: ${cityHumidity}%`),
+        $('<p>').addClass('card-text').html(`<i class="fas fa-wind"></i> Wind Speed: ${cityWindSpeed} mph`),
+        $('<p>').addClass('card-text').html(`<i class="fas fa-sun"></i> Sunrise: ${sunrise}`),
+        $('<p>').addClass('card-text').html(`<i class="fas fa-moon"></i> Sunset: ${sunset}`)
+    );
+    
+
+    // Append the additional details card body to the additional details card
+    $additionalDetailsCard.append($additionalDetailsCardBody);
+
+    // Append the additional details card to the display-weather container
+    displayWeather.append($additionalDetailsCard);
+
+    // console.log(cityName, cityTemp, cityTempFeels, cityTempMax, cityTempMin, cityHumidity, cityWindSpeed, cityWeather);
 }
+
 
 function displayForecastWeather(data) {
     const forecasts = data.list;
@@ -150,11 +173,12 @@ function displayForecastWeather(data) {
 
         // Populate card body with forecast details
         const dateElement = $('<p>').addClass('dateElement text-center fw-bold fs-14').text(formattedDate);
-        const temperatureElement = $('<p>').text(`Temperature: ${temperature} °F`);
-        const feelsLikeElement = $('<p>').text(`Feels Like: ${feelsLike} °F`);
-        const tempMinMaxElement = $('<p>').text(`Min: ${tempMin} °F, Max: ${tempMax} °F`);
-        const windSpeedElement = $('<p>').text(`Wind Speed: ${windSpeed} mph`);
-        const descriptionElement = $('<p>').text(`Description: ${weatherDescription}`);
+        const temperatureElement = $('<p>').html(`<i class="fas fa-thermometer-half"></i> Temperature: ${temperature} °F`);
+        const feelsLikeElement = $('<p>').html(`<i class="fas fa-thermometer-half"></i> Feels Like: ${feelsLike} °F`);
+        const tempMinMaxElement = $('<p>').html(`<i class="fas fa-arrow-down"></i> Min: ${tempMin} °F / <i class="fas fa-arrow-up"></i> Max: ${tempMax} °F`);
+        const windSpeedElement = $('<p>').html(`<i class="fas fa-wind"></i> Wind Speed: ${windSpeed} mph`);
+        const descriptionElement = $('<p>').html(`<i class="fas fa-cloud"></i> Description: ${weatherDescription}`);
+        
 
         // Append forecast details to card body
         cardBody.append(dateElement, temperatureElement, feelsLikeElement, tempMinMaxElement, windSpeedElement, descriptionElement);
