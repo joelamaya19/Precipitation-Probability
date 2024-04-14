@@ -1,7 +1,7 @@
 // Define a mapping of weather descriptions to background
 const backgroundMap = {
     'Clear': './assets/images/sunny.gif', // Sunny
-    'Clouds': './assets/images/cloudy2.gif', // Cloudy
+    'Clouds': './assets/images/cloudy.gif', // Cloudy
     'Rain': './assets/images/rainy.gif', // Rainy
     'Thunderstorm': './assets/images/thunderstorm.gif', // Thunderstorm
     'Snow': './assets/images/snowy.gif', // Snowy
