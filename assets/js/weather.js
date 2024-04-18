@@ -236,7 +236,7 @@ $('#citySearchForm').submit(function(event) {
     
 
     if (inputValue.length>3) {
-        window.location.href = `search-weather.html?search=${inputValue}`;
+        window.location.href = `/Precipitation-Probability/search-weather.html?search=${inputValue}`;
 
     } else {
         displayError();
