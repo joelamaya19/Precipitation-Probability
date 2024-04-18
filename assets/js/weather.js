@@ -93,8 +93,8 @@ function displayCurrentWeather(data) {
     const mainWeatherDescription = capitalizeFirstLetter(data.weather[0].main);
     
     // Get sunrise and sunset times using Day.js
-    const sunrise = dayjs.unix(data.sys.sunrise).format(`HH:mm`);
-    const sunset = dayjs.unix(data.sys.sunset).format(`HH:mm`);
+    const sunrise = dayjs.unix(data.sys.sunrise).format(`h:mm A`);
+    const sunset = dayjs.unix(data.sys.sunset).format(`h:mm A`);
 
     // Get the background image URL based on the main weather description
     const backgroundImageUrl = backgroundMap[mainWeatherDescription] || '#FFFFFF'; // Default to white if no match found
