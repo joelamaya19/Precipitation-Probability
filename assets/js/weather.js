@@ -235,9 +235,8 @@ $('#citySearchForm').submit(function(event) {
     citySearchInput.val(inputValue); // Set the capitalized value back to the input field
     
 
-    if (inputValue.length>3) {
+    if (inputValue.length > 3) {
         window.location.href = `/Precipitation-Probability/search-weather.html?search=${inputValue}`;
-
     } else {
         displayError();
     }
