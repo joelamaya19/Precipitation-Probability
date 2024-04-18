@@ -236,7 +236,7 @@ $('#citySearchForm').submit(function(event) {
     
 
     if (inputValue.length>3) {
-        window.location.href = `/Precipitation-Probability/search-weather.html?search=${inputValue}`;
+        window.location.href = `/search-weather.html?search=${inputValue}`;
 
     } else {
         displayError();
@@ -289,7 +289,7 @@ $('#citySearchInput').click(function(){
         getSearchHistory().splice(0, 4).forEach(search => {
             let $card = $('<div class="border">' +
             '<div class="recent-search">' +
-            '<a href="/search-weather.html?search='+ search +'">'+ search +'</a>' +
+            '<a href="/Precipitation-Probability/search-weather.html?search='+ search +'">'+ search +'</a>' +
             '</div>' +
             '</div>');
             // Append the card to the parent container
